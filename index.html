@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighting Rig Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Lighting Rig Designer</h1>
+    <nav class="views" role="tablist" aria-label="Views">
+      <button class="view-tab" data-view="rig" role="tab" aria-selected="true">Rig lists</button>
+      <button class="view-tab" data-view="plot" role="tab" aria-selected="false">LX plot</button>
+    </nav>
+    <div class="actions">
+      <button id="exportCsv" class="ghost">Schedule CSV</button>
+      <button id="exportPatch" class="ghost">Patch CSV</button>
+      <button id="exportJson" class="ghost">Export JSON</button>
+      <label class="btn ghost">Import JSON<input type="file" id="importFile" accept="application/json" hidden></label>
+      <button id="resetBtn" class="ghost">Reset</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel library">
+      <h2>Fixture library</h2>
+      <p class="hint" id="libHint"></p>
+      <div class="stack">
+        <input id="search" type="search" placeholder="Search brand, model, type">
+        <select id="brandFilter" aria-label="Filter by brand"></select>
+      </div>
+      <div id="library"></div>
+
+      <h3>Add custom fixture</h3>
+      <form id="customForm" class="stack">
+        <input name="brand" placeholder="Brand" required>
+        <input name="model" placeholder="Model" required>
+        <select name="type" id="customType" aria-label="Fixture type"></select>
+        <input name="watts" type="number" min="1" placeholder="Watts" required>
+        <input name="channels" type="number" min="1" max="512" placeholder="DMX channels" required>
+        <select name="plug" id="customPlug" aria-label="Default plug"></select>
+        <button type="submit">Add to library</button>
+      </form>
+    </aside>
+
+    <section id="rigView" class="rig">
+      <div class="section-head">
+        <h2>Lighting bars</h2>
+        <form id="barForm" class="inline">
+          <input name="name" placeholder="Bar name" required>
+          <input name="ways" type="number" min="1" max="24" value="6" aria-label="Number of ways" required>
+          <select name="slotPlug" id="barSlotPlug" aria-label="Plug per way"></select>
+          <select name="feedPlug" id="barFeedPlug" aria-label="Feed plug"></select>
+          <button type="submit">Add bar</button>
+        </form>
+      </div>
+      <div id="bars"></div>
+
+      <div class="section-head">
+        <h2>Dimmer racks</h2>
+        <form id="rackForm" class="inline">
+          <input name="name" placeholder="Rack name" required>
+          <input name="channels" type="number" min="1" max="96" value="12" aria-label="Number of channels" required>
+          <select name="size" id="rackSize" aria-label="Channel size"></select>
+          <button type="submit">Add rack</button>
+        </form>
+      </div>
+      <div id="racks"></div>
+    </section>
+
+    <section id="plotView" class="plot" hidden>
+      <div class="plot-toolbar">
+        <label class="field">Width (m) <input type="number" id="plotW" min="4" max="60" step="0.5"></label>
+        <label class="field">Depth (m) <input type="number" id="plotH" min="4" max="40" step="0.5"></label>
+        <button id="clearPlot" class="ghost">Clear plot</button>
+        <span class="muted">Drag fixtures to move them. Snaps to 0.5 m.</span>
+      </div>
+      <div id="plotCanvas" class="plot-canvas"></div>
+    </section>
+
+    <aside class="panel summary">
+      <div id="summary"></div>
+      <div id="plotSide" hidden>
+        <div id="inspector"></div>
+        <h3>Patch sheet</h3>
+        <div id="patch"></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
